@@ -6,8 +6,22 @@
  * user guide available at https://docs.gradle.org/3.5/userguide/java_library_plugin.html
  */
 
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+       
+        classpath 'io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE'
+        classpath group: 'pl.allegro.tech.build', name: 'axion-release-plugin', version: '1.7.1'
+      
+    }
+}
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+apply plugin: 'pl.allegro.tech.build.axion-release'
+apply plugin: 'eclipse'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -15,6 +29,16 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+
+scmVersion {
+    tag { 
+        prefix = 'test' 
+    }
+
+    versionIncrementer 'incrementMinor'
+}
+
+project.version = scmVersion.version
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
